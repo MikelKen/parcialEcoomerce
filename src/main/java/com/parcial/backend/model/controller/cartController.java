@@ -36,9 +36,13 @@ public class cartController {
 
     @GetMapping("/view-card-product")
     public ResponseEntity<UserDTO> addToCartViewProduct( HttpServletRequest request ){
-        return ResponseEntity.ok(cartService.countAddToCartProduct( request ));
+        return ResponseEntity.ok(cartService.addToCartViewProduct(request ));
     }
 
+    @PostMapping("/update-cart-product")
+    public ResponseEntity<UserDTO> updateAddToCartProduct(@RequestBody CategoryDTO cartProdut,HttpServletRequest request ){
+        return ResponseEntity.ok(cartService.updateAddToCartProduct(cartProdut,request));
+    }
     @PostMapping("/delete-cart-product")
     public ResponseEntity<UserDTO> deleteAddToCartProduct(@RequestBody CategoryDTO cartProdut,HttpServletRequest request ){
         return ResponseEntity.ok(cartService.deleteAddToCartProduct(cartProdut,request));

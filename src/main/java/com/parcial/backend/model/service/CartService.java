@@ -98,15 +98,16 @@ public class CartService {
     public UserDTO updateAddToCartProduct(CategoryDTO cartProduct,HttpServletRequest request){
         
         try {
-
             Integer userId = (Integer) request.getAttribute("userId");
             Integer productId = cartProduct.get_id();
             Integer quantity = cartProduct.getQuantity();
-
+            
+            System.out.println("LLLEGO "+userId);
+            System.out.println("LLLEGO "+productId+" aqui "+quantity);
 
 
             CartProduct existCartProduct = cartRepository.findByUserIdAndProductId(userId, productId);
-
+            System.out.println("existe  "+existCartProduct);;
             if(existCartProduct != null){
                 existCartProduct.setQuantity(quantity);
                 cartRepository.save(existCartProduct);
@@ -134,6 +135,32 @@ public class CartService {
             .message(e.getMessage())
             .build();
         }     
+    }
+
+    public UserDTO addToCartViewProduct(HttpServletRequest request){
+        try {
+
+            Integer userId = (Integer) request.getAttribute("userId");
+           
+            List<CartProduct> allprodut = cartRepository.findByUserId(userId);
+
+            
+                return UserDTO.builder()
+                    .data(allprodut)
+                    .success(true)
+                    .error(false)
+                    .message("Product not found")
+                    .build();
+            
+
+        } catch (Exception e) {
+           return UserDTO.builder()
+            .data(null)
+            .success(false)
+            .error(true)
+            .message(e.getMessage())
+            .build();
+        }  
     }
 
     public UserDTO deleteAddToCartProduct(CategoryDTO cartProduct,HttpServletRequest request){
