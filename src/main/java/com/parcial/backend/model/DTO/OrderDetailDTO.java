@@ -1,6 +1,6 @@
 package com.parcial.backend.model.DTO;
 
-import java.util.List;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
