@@ -32,5 +32,13 @@ public class orderController {
       
         return ResponseEntity.ok(orderService.allOrders());
     }
+
+    @PostMapping("/order-detail")
+    public ResponseEntity<UserDTO> orderDetail(@RequestBody Integer orderId){        
+      
+        return ResponseEntity.ok(orderService.orderDetail(orderId));
+    }
+
+
      
 }

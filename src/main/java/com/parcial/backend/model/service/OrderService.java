@@ -2,12 +2,14 @@ package com.parcial.backend.model.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.parcial.backend.model.DTO.OrderDTO;
 import com.parcial.backend.model.DTO.OrderDetailDTO;
+import com.parcial.backend.model.DTO.OrderItemDTO;
 import com.parcial.backend.model.DTO.ProductDTO;
 import com.parcial.backend.model.DTO.UserDTO;
 import com.parcial.backend.model.entity.Orders;
@@ -139,6 +141,54 @@ public class OrderService {
             .success(true)
             .error(false)
             .message("All orders retrieved Successfully!!")
+            .build();
+        } catch (Exception e) {
+           return UserDTO.builder()
+            .data(null)
+            .success(false)
+            .error(true)
+            .message(e.getMessage())
+            .build();
+        }     
+    
+    }
+
+    public UserDTO orderDetail(Integer orderId) {  
+        try {
+            
+            Orders order = orderRepository.findById(orderId)
+            .orElseThrow(() -> new RuntimeException("Orden no encontrada"));
+
+        List<OrderItem> orderItems = orderItemRepository.findByOrderId(orderId);
+
+        // Crear la lista de OrderItemDTO
+        List<OrderItemDTO> orderItemDTOs = orderItems.stream().map(item -> 
+            OrderItemDTO.builder()
+                .id(item.getId())
+                .name(item.getName())
+                .category(item.getCategory())
+                .quantity(item.getQuantity())
+                .price(item.getPrice())
+                .productImage(item.getProductImage()) // Incluir la imagen
+                .build()
+        ).collect(Collectors.toList());
+
+        // Crear un objeto DTO con los detalles de la orden
+        OrderDetailDTO orderDetail = OrderDetailDTO.builder()
+            .orderId(order.getId())
+            .userName(order.getUserName())
+            .total(order.getTotal())
+            .paymentMethod(order.getPaymentMethod())
+            .state(order.getState())
+            .items(orderItemDTOs) // Usar la lista de OrderItemDTO
+            .build();
+
+        // Construir la respuesta UserDTO
+        return UserDTO.builder()
+            .data(orderDetail)
+            .success(true)
+            .error(false)
+            .message("Detalles de la orden recuperados con éxito!")
             .build();
         } catch (Exception e) {
            return UserDTO.builder()
