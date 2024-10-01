@@ -63,7 +63,7 @@ public class OrderService {
                 .data(saveOrder)
                 .success(true)
                 .error(false)
-                .message("Succesfull payment")
+                .message("Succesfull ")
                 .build();
         } catch (Exception e) {
             return UserDTO.builder()
