@@ -43,6 +43,8 @@ public class OrderService {
             Integer userId = (Integer) request.getAttribute("userId");
             String userName = (String) request.getAttribute("username");
            
+             System.out.println("::::::::::::::::::"+userName+":::::::::::::"+userId);
+
             Users user = usersRepository.findById(userId).orElseThrow(()-> new RuntimeException("User not found"));
             Orders orders = Orders.builder()
                 .user(user)
@@ -72,6 +74,48 @@ public class OrderService {
             .build();
         }
     }
+
+
+
+
+    public UserDTO saveOrderRev (OrderDTO orederReq,HttpServletRequest request){
+
+        try {
+            Integer userId = (Integer) request.getAttribute("userId");
+            String userName = (String) request.getAttribute("username");
+           
+             System.out.println("::::::::::::::::::"+userName+":::::::::::::"+userId);
+
+            Users user = usersRepository.findById(userId).orElseThrow(()-> new RuntimeException("User not found"));
+            Orders orders = Orders.builder()
+                .user(user)
+                .userName(userName)
+                .total(orederReq.getAmount())
+                .dateOrder(LocalDateTime.now())
+                .totalQty(orederReq.getTotalQty())
+                .paymentMethod(orederReq.getPaymentMethod())
+                .state(orederReq.getState())
+                .build();
+
+           Orders saveOrder = orderRepository.save(orders);
+     
+            saveOrderDetails(orederReq.getProductDetail(), saveOrder);
+            return UserDTO.builder()
+                .data(saveOrder)
+                .success(true)
+                .error(false)
+                .message("Succesfull Reserverd")
+                .build();
+        } catch (Exception e) {
+            return UserDTO.builder()
+            .data(null)
+            .success(false)
+            .error(true)
+            .message(e.getMessage())
+            .build();
+        }
+    }
+
 
 
     public void saveOrderDetails(List<OrderDetailDTO> orderDetail, Orders order){

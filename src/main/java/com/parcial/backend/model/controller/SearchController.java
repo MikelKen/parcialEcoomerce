@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.parcial.backend.model.DTO.FilterDTO;
-import com.parcial.backend.model.DTO.ProductDTO;
 import com.parcial.backend.model.DTO.UserDTO;
 import com.parcial.backend.model.service.SearchService;
 

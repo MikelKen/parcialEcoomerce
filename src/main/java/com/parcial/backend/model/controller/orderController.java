@@ -23,7 +23,13 @@ public class orderController {
     
     @PostMapping("save-order")
     public ResponseEntity<UserDTO> typePaymen(@RequestBody OrderDTO orderReq,HttpServletRequest request ){
-        System.out.println("DETALLE DE ORDEN DESDE EL CONTROLADOR "+request);
+     
+        return ResponseEntity.ok(orderService.saveOrder(orderReq,request));
+    }
+
+    @PostMapping("save-order")
+    public ResponseEntity<UserDTO> saveOrder(@RequestBody OrderDTO orderReq,HttpServletRequest request ){
+       
         return ResponseEntity.ok(orderService.saveOrder(orderReq,request));
     }
 
