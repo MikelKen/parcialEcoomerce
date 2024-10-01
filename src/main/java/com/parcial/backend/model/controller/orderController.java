@@ -27,7 +27,7 @@ public class orderController {
         return ResponseEntity.ok(orderService.saveOrder(orderReq,request));
     }
 
-    @PostMapping("save-reserved")
+    @PostMapping("/save-reserved")
     public ResponseEntity<UserDTO> saveOrder(@RequestBody OrderDTO orderReq,HttpServletRequest request ){
        
         return ResponseEntity.ok(orderService.saveOrder(orderReq,request));
